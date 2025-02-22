@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suraksha - MITR</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        input, button { margin: 5px; padding: 10px; }
+        button { border: 1px solid green; background: white; cursor: pointer; }
+        button:hover { background: lightgreen; }
+    </style>
+</head>
+<body>
+    <h2>Suraksha - MITR</h2>
+    
+    <label>IMEI:</label>
+    <input type="text" id="imei" value="868960068879036"><br>
+
+    <label>Minutes:</label>
+    <input type="text" id="time" value="60"><br>
+
+    <label>Latitude:</label>
+    <input type="text" id="latitude" value="010.199190N"><br>
+
+    <label>Longitude:</label>
+    <input type="text" id="longitude" value="076.371505E"><br>
+
+    <button onclick="sendRequest('start')">PUSH DATA</button>
+    <button onclick="sendRequest('stop')">STOP DATA</button>
+    <button onclick="sendRequest('emergency_on')">EMERGENCY ON</button>
+    <button onclick="sendRequest('emergency_off')">EMERGENCY OFF</button>
+    <button onclick="sendRequest('ignition_on')">IGNITION ON</button>
+    <button onclick="sendRequest('ignition_off')">IGNITION OFF</button>
+
+    <script>
+        function sendRequest(action) {
+            let imei = document.getElementById('imei').value;
+            let time = document.getElementById('time').value;
+            let latitude = document.getElementById('latitude').value;
+            let longitude = document.getElementById('longitude').value;
+
+            let url = `http://3.7.70.49:8081/trigger/${action}/data?imeiNo=${imei}&latitude=${latitude}&longitude=${longitude}&time=${time}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'User-Agent': 'Mozilla/5.0'
+                }
+            })
+            .then(response => response.json())
+            .then(data => alert(`Response: ${JSON.stringify(data)}`))
+            .catch(error => alert(`Error: ${error}`));
+        }
+    </script>
+</body>
+</html>
